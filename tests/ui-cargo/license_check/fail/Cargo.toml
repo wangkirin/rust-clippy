@@ -1,0 +1,10 @@
+# Content that triggers the lint goes here
+
+[package]
+name = "license_check"
+version = "0.1.0"
+publish = false
+license = "MIT OR Apache-2.0"
+
+
+[workspace]

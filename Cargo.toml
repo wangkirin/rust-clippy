@@ -1,5 +1,5 @@
 [package]
-name = "clippy"
+name = "kirin-clippy"
 version = "0.1.74"
 description = "A bunch of helpful lints to avoid common pitfalls in Rust"
 repository = "https://github.com/rust-lang/rust-clippy"
@@ -12,12 +12,12 @@ edition = "2021"
 publish = false
 
 [[bin]]
-name = "cargo-clippy"
+name = "cargo-myclippy"
 test = false
 path = "src/main.rs"
 
 [[bin]]
-name = "clippy-driver"
+name = "clippy-mydriver"
 path = "src/driver.rs"
 
 [dependencies]

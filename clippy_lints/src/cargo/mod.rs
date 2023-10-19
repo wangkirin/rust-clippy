@@ -1,5 +1,6 @@
 mod common_metadata;
 mod feature_name;
+mod license_check;
 mod multiple_crate_versions;
 mod wildcard_dependencies;
 
@@ -162,6 +163,25 @@ declare_clippy_lint! {
     "wildcard dependencies being used"
 }
 
+declare_clippy_lint! {
+    /// ### What it does
+    ///
+    /// ### Why is this bad?
+    ///
+    /// ### Example
+    /// ```rust
+    /// // example code where clippy issues a warning
+    /// ```
+    /// Use instead:
+    /// ```rust
+    /// // example code which does not raise clippy warning
+    /// ```
+    #[clippy::version = "1.74.0"]
+    pub LICENSE_CHECK,
+    cargo,
+    "check if `license` OR `license-file` item exists "
+}
+
 pub struct Cargo {
     pub ignore_publish: bool,
 }
@@ -171,7 +191,8 @@ impl_lint_pass!(Cargo => [
     REDUNDANT_FEATURE_NAMES,
     NEGATIVE_FEATURE_NAMES,
     MULTIPLE_CRATE_VERSIONS,
-    WILDCARD_DEPENDENCIES
+    WILDCARD_DEPENDENCIES,
+    LICENSE_CHECK,
 ]);
 
 impl LateLintPass<'_> for Cargo {
@@ -181,6 +202,7 @@ impl LateLintPass<'_> for Cargo {
             REDUNDANT_FEATURE_NAMES,
             NEGATIVE_FEATURE_NAMES,
             WILDCARD_DEPENDENCIES,
+            LICENSE_CHECK,
         ];
         static WITH_DEPS_LINTS: &[&Lint] = &[MULTIPLE_CRATE_VERSIONS];
 
@@ -193,6 +215,7 @@ impl LateLintPass<'_> for Cargo {
                     common_metadata::check(cx, &metadata, self.ignore_publish);
                     feature_name::check(cx, &metadata);
                     wildcard_dependencies::check(cx, &metadata);
+                    license_check::check(cx, &metadata);
                 },
                 Err(e) => {
                     for lint in NO_DEPS_LINTS {
